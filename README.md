@@ -6,13 +6,24 @@ The Coho Swift SDK provides an easy way to integrate with Coho's services, allow
 
 ## Installation
 
-To add the Coho Swift SDK to your project, install it using Swift Package Manager:
+To add the Coho Swift SDK to your project, you can either use Swift Package Manager or CocoaPods.
+
+### Swift Package Manager
 
 1. Open your project in Xcode.
 2. Go to File > Add Package Dependencies... .
 3. Enter the repository URL for the Coho SDK: https://github.com/coho-ai/swift-sdk .
 4. Select the version you want to use.
 5. Add the package to your targets.
+
+### CocoaPods
+
+1. Create a Podfile in your project directory, if you don't already have one, by running `pod init`.
+2. Add the following line to your Podfile:
+    ```ruby
+    pod 'CohoSDK'
+    ```
+3. Run `pod install --repo-update` to install the Coho SDK.
 
 ## Usage
 
