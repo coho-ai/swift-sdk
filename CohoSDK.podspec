@@ -1,7 +1,7 @@
 Pod::Spec.new do |spec|
 
   spec.name         = "CohoSDK"
-  spec.version      = "1.0.4"
+  spec.version      = "1.1.0"
   spec.summary      = "Coho AI Events SDK for Swift."
   spec.description  = <<-DESC
   Send events to Coho AI with the SDK for Swift.
