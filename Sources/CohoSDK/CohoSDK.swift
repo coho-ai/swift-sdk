@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 public class CohoSDK {
     private let tenantId: String
@@ -70,7 +71,21 @@ public class CohoSDK {
     }
 
     private func encodeEvent(eventName: String, userId: String, additionalProperties: [String: Any]) throws -> Data {
-        var event: [String: Any] = ["eventName": eventName, "userId": userId, "clientTimestamp": Date().iso8601String]
+        var event: [String: Any] = [
+            "eventName": eventName,
+            "userId": userId,
+            "clientTimestamp": Date().iso8601String,
+            "timeZone": TimeZone.current.identifier,
+            "localClientTime": Date().localIso8601String,
+            "country": Locale.current.regionCode ?? "Unknown",
+            "language": Locale.current.languageCode ?? "Unknown",
+            "os": UIDevice.current.systemName,
+            "osVersion": UIDevice.current.systemVersion,
+            "device": UIDevice.current.model,
+            "manufacturer": "Apple",
+            "isTablet": UIDevice.current.userInterfaceIdiom == .pad
+        ]
+        
         additionalProperties.forEach { event[$0.key] = $0.value }
 
         let payload: [String: Any] = ["events": [event]]
@@ -122,6 +137,13 @@ public class CohoSDK {
 private extension Date {
     var iso8601String: String {
         let formatter = ISO8601DateFormatter()
+        formatter.timeZone = TimeZone(secondsFromGMT: 0) // UTC time
+        return formatter.string(from: self)
+    }
+    
+    var localIso8601String: String {
+        let formatter = ISO8601DateFormatter()
+        formatter.timeZone = TimeZone.current // Local time zone
         return formatter.string(from: self)
     }
 }
