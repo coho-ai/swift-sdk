@@ -59,17 +59,7 @@ public class CohoSDK {
             print("[CohoSDK] \(message)")
         }
     }
-
-    private func createRequest() -> URLRequest {
-        var request = URLRequest(url: endpoint)
-        request.httpMethod = "POST"
-        request.setValue(Constants.Headers.applicationJson, forHTTPHeaderField: Constants.Headers.contentType)
-        request.setValue(Constants.Headers.acceptAll, forHTTPHeaderField: Constants.Headers.accept)
-        request.setValue(tenantId, forHTTPHeaderField: Constants.Headers.tenantIdKey)
-        request.setValue(Constants.Headers.userId, forHTTPHeaderField: Constants.Headers.userIdKey)
-        return request
-    }
-
+    
     private func encodeEvent(eventName: String, userId: String, additionalProperties: [String: Any]) throws -> Data {
         var event: [String: Any] = [
             "eventName": eventName,
@@ -83,7 +73,7 @@ public class CohoSDK {
             "osVersion": UIDevice.current.systemVersion,
             "device": UIDevice.current.model,
             "manufacturer": "Apple",
-            "isTablet": UIDevice.current.userInterfaceIdiom == .pad
+            "deviceType": UIDevice.current.userInterfaceIdiom == .pad ? "Tablet" : "Mobile"
         ]
         
         additionalProperties.forEach { event[$0.key] = $0.value }
@@ -91,7 +81,7 @@ public class CohoSDK {
         let payload: [String: Any] = ["events": [event]]
         return try JSONSerialization.data(withJSONObject: payload, options: [])
     }
-
+    
     private func sendRequest(with body: Data, attempts: Int, completion: @escaping (Result<Void, Error>) -> Void) {
         let request = createRequest()
 
@@ -115,6 +105,18 @@ public class CohoSDK {
             self?.log("Event sent successfully")
             completion(.success(()))
         }.resume()
+    }
+
+    private func createRequest() -> URLRequest {
+        var request = URLRequest(url: endpoint)
+        request.httpMethod = "POST"
+        request.setValue(Constants.Headers.applicationJson, forHTTPHeaderField: Constants.Headers.contentType)
+        request.setValue(Constants.Headers.acceptAll, forHTTPHeaderField: Constants.Headers.accept)
+        request.setValue(tenantId, forHTTPHeaderField: Constants.Headers.tenantIdKey)
+        request.setValue(Constants.Headers.userId, forHTTPHeaderField: Constants.Headers.userIdKey)
+        request.setValue("sdk", forHTTPHeaderField: Constants.Headers.dataContext)
+        
+        return request
     }
 
     private func handleError(_ error: Error, attempts: Int, with body: Data, completion: @escaping (Result<Void, Error>) -> Void) {
