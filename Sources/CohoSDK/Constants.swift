@@ -14,6 +14,7 @@ struct Constants {
         static let userIdKey = "X-Coho-UserId-Key"
         static let applicationJson = "application/json"
         static let userId = "userId"
+        static let dataSourceContext = "X-Coho-DatasourceContext"
     }
 
     struct Messages {
