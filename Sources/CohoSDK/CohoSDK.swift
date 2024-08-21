@@ -114,7 +114,7 @@ public class CohoSDK {
         request.setValue(Constants.Headers.acceptAll, forHTTPHeaderField: Constants.Headers.accept)
         request.setValue(tenantId, forHTTPHeaderField: Constants.Headers.tenantIdKey)
         request.setValue(Constants.Headers.userId, forHTTPHeaderField: Constants.Headers.userIdKey)
-        request.setValue("sdk", forHTTPHeaderField: Constants.Headers.dataContext)
+        request.setValue("sdk", forHTTPHeaderField: Constants.Headers.dataSourceContext)
         
         return request
     }
